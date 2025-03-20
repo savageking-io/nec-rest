@@ -2,3 +2,6 @@
 
 hostname: 0.0.0.0
 port: 12120
+user_service:
+  hostname: necuser-service.sdev.svc.cluster.local
+  port: 50051

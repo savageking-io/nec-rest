@@ -10,9 +10,15 @@ import (
 )
 
 type Config struct {
-	Hostname       string   `yaml:"hostname"`
-	Port           uint16   `yaml:"port"`
-	AllowedOrigins []string `yaml:"allowed_origins"`
+	Hostname       string             `yaml:"hostname"`
+	Port           uint16             `yaml:"port"`
+	AllowedOrigins []string           `yaml:"allowed_origins"`
+	UserService    *UserServiceConfig `yaml:"user_service"`
+}
+
+type UserServiceConfig struct {
+	Hostname string `yaml:"hostname"`
+	Port     uint16 `yaml:"port"`
 }
 
 type REST struct {
