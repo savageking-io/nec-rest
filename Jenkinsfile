@@ -8,12 +8,6 @@ pipeline {
     }
 
     stages {
-        stage('Checkout Code') {
-            steps {
-                checkout scm
-            }
-        }
-
         stage('Configure Build') {
             steps {
                 script {
@@ -32,6 +26,8 @@ pipeline {
                     } else {
                         error "Unsupported branch or tag: ${branchName}"
                     }
+
+                    sh 'ls -la'
 
                     def version = readFile('VERSION').trim()
                     if (isTag) {
