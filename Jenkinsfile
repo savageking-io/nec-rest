@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKER_CREDENTIALS_ID = 'docker-hub-credentials'
-        DOCKER_REGISTRY = 'docker.io'
+        DOCKER_REGISTRY = 'registry.hub.docker.com'
         DOCKER_USERNAME = 'savageking'
     }
 
