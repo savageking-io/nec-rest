@@ -8,6 +8,14 @@ pipeline {
     }
 
     stages {
+        // Debugging pipeline
+        stage('Verify Agent') {
+                steps {
+                    sh 'echo "Agent: $(hostname)"'
+                    sh 'docker --version || echo "Docker not installed"'
+                    sh 'whoami' // Confirm user running the pipeline
+                }
+        }
         stage('Configure Build') {
             steps {
                 script {
