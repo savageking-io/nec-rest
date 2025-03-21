@@ -27,17 +27,17 @@ pipeline {
                         error "Unsupported branch or tag: ${branchName}"
                     }
                     env.DOCKER_TAG = "experimental"
-/*
+
                     def app_version
-                        try {
-                            app_version = sh(script: 'cat VERSION || type VERSION', returnStdout: true).trim()
-                            echo "VERSION content: '${app_version}'"
-                            if (app_version == '') {
-                                error "VERSION file is empty or could not be read."
-                            }
-                        } catch (Exception e) {
-                            error "Failed to get version from VERSION file: ${e.message}. Ensure VERSION exists in repo root."
+                    try {
+                        app_version = sh(script: 'cat VERSION || type VERSION', returnStdout: true).trim()
+                        echo "VERSION content: '${app_version}'"
+                        if (app_version == '') {
+                            error "VERSION file is empty or could not be read."
                         }
+                    } catch (Exception e) {
+                        error "Failed to get version from VERSION file: ${e.message}. Ensure VERSION exists in repo root."
+                    }
 
                     if (isTag) {
                         env.DOCKER_TAG = app_version
@@ -45,7 +45,7 @@ pipeline {
                     } else {
                         env.DOCKER_TAG = "${app_version}-${env.BUILD_NUMBER}"
                         echo "Building Branch. Version: ${enc.DOCKER_TAG}"
-                    }*/
+                    }
 
                     echo "Docker Image: ${env.DOCKER_IMAGE}:${env.DOCKER_TAG}"
                 }
@@ -55,7 +55,8 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    def dockerImage = docker.build("${env.DOCKER_IMAGE}:${env.DOCKER_TAG}")
+                    echo "Building Image: ${env.DOCKER_IMAGE}:${env.DOCKER_TAG}"
+                    //def dockerImage = docker.build("${env.DOCKER_IMAGE}:${env.DOCKER_TAG}")
                 }
             }
         }
@@ -63,7 +64,8 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    docker.withRegistry("https://${DOCKER_REGISTRY}", DOCKER_CREDENTIALS_ID) {
+                    echo "Pushing Image: ${env.DOCKER_IMAGE}:${env.DOCKER_TAG} to ${DOCKER_REGISTRY}"
+                    //docker.withRegistry("https://${DOCKER_REGISTRY}", DOCKER_CREDENTIALS_ID) {
                         def dockerImage = docker.image("${env.DOCKER_IMAGE}:${env.DOCKER_TAG}")
                         dockerImage.push()
                     }
