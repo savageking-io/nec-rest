@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'Docker Build' }
+    agent { label 'Images' }
 
     environment {
         DOCKER_CREDENTIALS_ID = 'docker-hub-credentials'
