@@ -74,7 +74,8 @@ pipeline {
 
     post {
         always {
-            cleanWs()
+            echo "Debug: skipping clean"
+            //cleanWs()
         }
         success {
             echo 'Docker image built and pushed successfully!'
