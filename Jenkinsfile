@@ -27,9 +27,17 @@ pipeline {
                         error "Unsupported branch or tag: ${branchName}"
                     }
 
-                    sh 'cat VERSION || type VERSION || echo "VERSION file missing"'
+                    def version
+                        try {
+                            version = sh(script: 'cat VERSION || type VERSION', returnStdout: true).trim()
+                            echo "VERSION content: '${version}'"
+                            if (version == '') {
+                                error "VERSION file is empty or could not be read."
+                            }
+                        } catch (Exception e) {
+                            error "Failed to get version from VERSION file: ${e.message}. Ensure VERSION exists in repo root."
+                        }
 
-                    def version = readFile('VERSION').trim()
                     if (isTag) {
                         env.DOCKER_TAG = version
                         echo "Building Tag. Version: ${enc.DOCKER_TAG}"
