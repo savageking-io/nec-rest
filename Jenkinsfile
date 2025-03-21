@@ -66,9 +66,9 @@ pipeline {
                 script {
                     echo "Pushing Image: ${env.DOCKER_IMAGE}:${env.DOCKER_TAG} to ${DOCKER_REGISTRY}"
                     //docker.withRegistry("https://${DOCKER_REGISTRY}", DOCKER_CREDENTIALS_ID) {
-                        def dockerImage = docker.image("${env.DOCKER_IMAGE}:${env.DOCKER_TAG}")
-                        dockerImage.push()
-                    }
+                    //    def dockerImage = docker.image("${env.DOCKER_IMAGE}:${env.DOCKER_TAG}")
+                    //    dockerImage.push()
+                    //}
                 }
             }
         }
