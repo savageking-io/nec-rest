@@ -26,7 +26,8 @@ pipeline {
                     } else {
                         error "Unsupported branch or tag: ${branchName}"
                     }
-
+                    env.DOCKER_TAG = "experimental"
+/*
                     def app_version
                         try {
                             app_version = sh(script: 'cat VERSION || type VERSION', returnStdout: true).trim()
@@ -44,7 +45,7 @@ pipeline {
                     } else {
                         env.DOCKER_TAG = "${app_version}-${env.BUILD_NUMBER}"
                         echo "Building Branch. Version: ${enc.DOCKER_TAG}"
-                    }
+                    }*/
 
                     echo "Docker Image: ${env.DOCKER_IMAGE}:${env.DOCKER_TAG}"
                 }
