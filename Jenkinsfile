@@ -27,11 +27,11 @@ pipeline {
                         error "Unsupported branch or tag: ${branchName}"
                     }
 
-                    def version
+                    def app_version
                         try {
-                            version = sh(script: 'cat VERSION || type VERSION', returnStdout: true).trim()
-                            echo "VERSION content: '${version}'"
-                            if (version == '') {
+                            app_version = sh(script: 'cat VERSION || type VERSION', returnStdout: true).trim()
+                            echo "VERSION content: '${app_version}'"
+                            if (app_version == '') {
                                 error "VERSION file is empty or could not be read."
                             }
                         } catch (Exception e) {
@@ -39,10 +39,10 @@ pipeline {
                         }
 
                     if (isTag) {
-                        env.DOCKER_TAG = version
+                        env.DOCKER_TAG = app_version
                         echo "Building Tag. Version: ${enc.DOCKER_TAG}"
                     } else {
-                        env.DOCKER_TAG = "${version}-${env.BUILD_NUMBER}"
+                        env.DOCKER_TAG = "${app_version}-${env.BUILD_NUMBER}"
                         echo "Building Branch. Version: ${enc.DOCKER_TAG}"
                     }
 
