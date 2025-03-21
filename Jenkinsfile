@@ -29,6 +29,9 @@ pipeline {
                     }
                     env.DOCKER_TAG = "experimental"
 
+                    sh 'whoami'
+
+                    /*
                     try {
                         env.APP_VERSION = sh(script: 'cat VERSION || type VERSION', returnStdout: true).trim()
                         echo "VERSION content: '${env.APP_VERSION}'"
@@ -46,6 +49,7 @@ pipeline {
                         env.DOCKER_TAG = "${env.APP_VERSION}-${env.BUILD_NUMBER}"
                         echo "Building Branch. Version: ${enc.DOCKER_TAG}"
                     }
+                    */
 
                     echo "Docker Image: ${env.DOCKER_IMAGE}:${env.DOCKER_TAG}"
                 }
