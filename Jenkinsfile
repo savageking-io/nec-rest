@@ -5,6 +5,7 @@ pipeline {
         DOCKER_CREDENTIALS_ID = 'docker-hub-credentials'
         DOCKER_REGISTRY = 'registry.hub.docker.com'
         DOCKER_USERNAME = 'savageking'
+        APP_VERSION = '0.0.0'
     }
 
     stages {
@@ -28,11 +29,10 @@ pipeline {
                     }
                     env.DOCKER_TAG = "experimental"
 
-                    def app_version
                     try {
-                        app_version = sh(script: 'cat VERSION || type VERSION', returnStdout: true).trim()
-                        echo "VERSION content: '${app_version}'"
-                        if (app_version == '') {
+                        env.APP_VERSION = sh(script: 'cat VERSION || type VERSION', returnStdout: true).trim()
+                        echo "VERSION content: '${env.APP_VERSION}'"
+                        if (env.APP_VERSION == '' || env.APP_VERSION == '0.0.0') {
                             error "VERSION file is empty or could not be read."
                         }
                     } catch (Exception e) {
@@ -40,10 +40,10 @@ pipeline {
                     }
 
                     if (isTag) {
-                        env.DOCKER_TAG = app_version
+                        env.DOCKER_TAG = env.APP_VERSION
                         echo "Building Tag. Version: ${enc.DOCKER_TAG}"
                     } else {
-                        env.DOCKER_TAG = "${app_version}-${env.BUILD_NUMBER}"
+                        env.DOCKER_TAG = "${env.APP_VERSION}-${env.BUILD_NUMBER}"
                         echo "Building Branch. Version: ${enc.DOCKER_TAG}"
                     }
 
