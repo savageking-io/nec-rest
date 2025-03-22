@@ -6,16 +6,17 @@ pipeline {
         DOCKER_REGISTRY = 'registry.hub.docker.com'
         DOCKER_USERNAME = 'savageking'
         APP_VERSION = '0.0.0'
+        IS_TAG = false
     }
 
     stages {
-        stage('Configure Build') {
+        stage('Configure Image') {
             steps {
                 script {
-                    def isTag = env.GIT_BRANCH =~ /^tags\//
+                    def env.IS_TAG = env.GIT_BRANCH =~ /^tags\//
                     def branchName = env.GIT_BRANCH?.replaceAll('^refs/heads/', '')?.replaceAll('^tags/', '')
 
-                    if (isTag) {
+                    if (env.IS_TAG) {
                         env.DOCKER_IMAGE = "${DOCKER_USERNAME}/necrest"
                         echo "Building Tag. Docker Image: necrest"
                     } else if (branchName == 'main') {
@@ -29,9 +30,12 @@ pipeline {
                     }
                     env.DOCKER_TAG = "experimental"
 
-                    sh 'whoami'
+            }
+        }
 
-                    /*
+        stage('Configure Tag') {
+            steps {
+                script {
                     try {
                         env.APP_VERSION = sh(script: 'cat VERSION || type VERSION', returnStdout: true).trim()
                         echo "VERSION content: '${env.APP_VERSION}'"
@@ -42,14 +46,13 @@ pipeline {
                         error "Failed to get version from VERSION file: ${e.message}. Ensure VERSION exists in repo root."
                     }
 
-                    if (isTag) {
+                    if (env.IS_TAG) {
                         env.DOCKER_TAG = env.APP_VERSION
                         echo "Building Tag. Version: ${enc.DOCKER_TAG}"
                     } else {
                         env.DOCKER_TAG = "${env.APP_VERSION}-${env.BUILD_NUMBER}"
                         echo "Building Branch. Version: ${enc.DOCKER_TAG}"
                     }
-                    */
 
                     echo "Docker Image: ${env.DOCKER_IMAGE}:${env.DOCKER_TAG}"
                 }
