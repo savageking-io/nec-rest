@@ -37,7 +37,7 @@ pipeline {
             steps {
                 script {
                     try {
-                        env.APP_VERSION = sh(script: 'cat VERSION || type VERSION', returnStdout: true).trim()
+                        env.APP_VERSION = sh(script: 'cat VERSION', returnStdout: true).trim()
                         echo "VERSION content: '${env.APP_VERSION}'"
                         if (env.APP_VERSION == '' || env.APP_VERSION == '0.0.0') {
                             error "VERSION file is empty or could not be read."
