@@ -29,7 +29,7 @@ pipeline {
                         error "Unsupported branch or tag: ${branchName}"
                     }
                     env.DOCKER_TAG = "experimental"
-
+                }
             }
         }
 
