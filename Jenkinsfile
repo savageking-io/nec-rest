@@ -13,7 +13,7 @@ pipeline {
         stage('Configure Image') {
             steps {
                 script {
-                    def env.IS_TAG = env.GIT_BRANCH =~ /^tags\//
+                    env.IS_TAG = env.GIT_BRANCH =~ /^tags\//
                     def branchName = env.GIT_BRANCH?.replaceAll('^refs/heads/', '')?.replaceAll('^tags/', '')
 
                     if (env.IS_TAG) {
