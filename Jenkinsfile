@@ -36,15 +36,7 @@ pipeline {
         stage('Configure Tag') {
             steps {
                 script {
-                    try {
-                        env.APP_VERSION = sh(script: 'cat VERSION', returnStdout: true).trim()
-                        echo "VERSION content: '${env.APP_VERSION}'"
-                        if (env.APP_VERSION == '' || env.APP_VERSION == '0.0.0') {
-                            error "VERSION file is empty or could not be read."
-                        }
-                    } catch (Exception e) {
-                        error "Failed to get version from VERSION file: ${e.message}. Ensure VERSION exists in repo root."
-                    }
+                    env.APP_VERSION = readFile('VERSION').trim()
 
                     if (env.IS_TAG) {
                         env.DOCKER_TAG = env.APP_VERSION
